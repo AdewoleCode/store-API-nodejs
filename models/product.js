@@ -10,10 +10,15 @@ const ProductSchema = new mongoose.Schema({
         type: Number,
         required: [true, 'must provide price'],
      },
+     featured: {
+      type: Boolean,
+      default: false,
+     },
      rating: {
         type: Number,
         default: 4.5,
      },
+    
      createdAt : {
         type: Date,
         default: Date.now(),
