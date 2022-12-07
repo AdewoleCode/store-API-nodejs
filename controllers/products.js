@@ -14,7 +14,7 @@ const getAllProductsStatic = async (req, res) => {
 
 
 const getAllProducts = async (req, res) => {
-    const { featured, company, name, sort } = req.query
+    const { featured, company, name, sort, fields } = req.query
     const queryObject = {}
 
     if (featured) {
@@ -43,6 +43,20 @@ const getAllProducts = async (req, res) => {
         //sort by what we pass in manually
         result = result.sort('name')
     }
+
+    if (fields) {
+        const FieldList = fields.split(',').join(' ')
+
+        result = result.select(FieldList)
+    }
+
+    const page = Number(req.query.page) || 1
+    const limit = Number(req.query.limit) || 10
+    const skip = (page - 1) * limit
+
+    result = result.skip(skip).limit(limit)
+
+
     const products = await result
     res.status(200).json({ products})
 }
